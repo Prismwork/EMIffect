@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "emiffect",
+  "version": "${version}",
+
+  "name": "EMIffect",
+  "description": "EMI addon that appends status effects in EMI and provides information about each status effect.",
+  "authors": [
+    "pkstDev"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/pkstDev/fabric-example-mod"
+  },
+
+  "license": "MIT",
+  "icon": "assets/emiffect/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "emi": [
+    ]
+  },
+  "mixins": [
+    "emiffect.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric-api": "*",
+    "minecraft": "~1.19",
+    "java": ">=17",
+    "emi": "*"
+  }
+}
