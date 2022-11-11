@@ -38,10 +38,18 @@ public class StatusEffectInfo implements EmiRecipe {
 
     public StatusEffectInfo(StatusEffect effect, StatusEffectEmiStack emiStack) {
         this.id = Registry.STATUS_EFFECT.getId(effect) != null ? Registry.STATUS_EFFECT.getId(effect) : new Identifier("emiffect", "missingno");
-        List<EmiIngredient> inputs1 = new ArrayList<>(List.of(EmiStack.of(PotionUtil.setPotion(Items.POTION.getDefaultStack(), Potion.byId(id.toString()))),
-                EmiStack.of(PotionUtil.setPotion(Items.SPLASH_POTION.getDefaultStack(), Potion.byId(id.toString()))),
-                EmiStack.of(PotionUtil.setPotion(Items.LINGERING_POTION.getDefaultStack(), Potion.byId(id.toString()))),
-                EmiStack.of(PotionUtil.setPotion(Items.TIPPED_ARROW.getDefaultStack(), Potion.byId(id.toString())))));
+        List<EmiIngredient> inputs1 = new ArrayList<>();
+        for (Potion potion : Registry.POTION) {
+            for (StatusEffectInstance instance : potion.getEffects()) {
+                if (instance.getEffectType().equals(effect)) {
+                    inputs1.addAll(List.of(EmiStack.of(PotionUtil.setPotion(Items.POTION.getDefaultStack(), potion)),
+                            EmiStack.of(PotionUtil.setPotion(Items.SPLASH_POTION.getDefaultStack(), potion)),
+                            EmiStack.of(PotionUtil.setPotion(Items.LINGERING_POTION.getDefaultStack(), potion)),
+                            EmiStack.of(PotionUtil.setPotion(Items.TIPPED_ARROW.getDefaultStack(), potion))));
+                    break;
+                }
+            }
+        }
         for (Block block : Registry.BLOCK) {
             if (block instanceof FlowerBlock flower) {
                 ItemStack stew = new ItemStack(Items.SUSPICIOUS_STEW);
@@ -72,7 +80,7 @@ public class StatusEffectInfo implements EmiRecipe {
         }
         this.inputs = inputs1;
         this.desc = MinecraftClient.getInstance().textRenderer.wrapLines(EmiPort.translatable("effect." + id.getNamespace() + "." + id.getPath() + ".description"), 110);
-        this.inputStackRow = 1;
+        this.inputStackRow = inputs.isEmpty() ? 0 : 1;
         int inputColumn = 0;
         for (EmiIngredient ignored : inputs) {
             if (inputColumn >= 6) {
