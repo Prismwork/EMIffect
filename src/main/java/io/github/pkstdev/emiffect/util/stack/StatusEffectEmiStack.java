@@ -12,7 +12,11 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.StatusEffectSpriteManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.potion.PotionUtil;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -20,6 +24,7 @@ import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class StatusEffectEmiStack extends EmiStack {
@@ -123,5 +128,15 @@ public class StatusEffectEmiStack extends EmiStack {
         public Class<? extends StatusEffect> getType() {
             return getValue().getClass();
         }
+    }
+
+    @Override
+    public ItemStack getItemStack() {
+        ItemStack stack = super.getItemStack();
+        if (effect != null) {
+            stack = PotionUtil.setCustomPotionEffects(Items.POTION.getDefaultStack(),
+                    Collections.singletonList(new StatusEffectInstance(effect, 600)));
+        }
+        return stack;
     }
 }

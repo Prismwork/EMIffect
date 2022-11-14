@@ -15,13 +15,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Entrypoint("emi") // For automatically registering the entrypoint
 public class EMIffectPlugin implements EmiPlugin {
     public static final String MOD_ID = "emiffect";
-    public static final Logger LOGGER = LoggerFactory.getLogger("Emiffect");
     public static final Identifier CATEGORY_ICON = new Identifier(MOD_ID, "textures/gui/emi/icon.png");
     public static final EmiRecipeCategory CATEGORY
             = new EmiRecipeCategory(new Identifier(MOD_ID, "status_effect_info"), new EmiTexture(CATEGORY_ICON, 0, 0, 16, 16, 16, 16, 16, 16));
