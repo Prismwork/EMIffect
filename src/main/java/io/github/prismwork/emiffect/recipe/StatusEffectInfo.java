@@ -1,4 +1,4 @@
-package io.github.pkstdev.emiffect.recipe;
+package io.github.prismwork.emiffect.recipe;
 
 import com.mojang.datafixers.util.Pair;
 import dev.emi.emi.EmiPort;
@@ -8,19 +8,21 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
-import io.github.pkstdev.emiffect.EMIffectPlugin;
-import io.github.pkstdev.emiffect.util.stack.StatusEffectEmiStack;
+import io.github.prismwork.emiffect.EMIffectPlugin;
+import io.github.prismwork.emiffect.util.stack.StatusEffectEmiStack;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.text.OrderedText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
@@ -121,18 +123,31 @@ public class StatusEffectInfo implements EmiRecipe {
 
     @Override
     public int getDisplayHeight() {
-        return 2 + Math.max(desc.size() * MinecraftClient.getInstance().textRenderer.fontHeight, 30) + 4 + (inputStackRow * 18) + 2;
+        return 14 + Math.max(desc.size() * MinecraftClient.getInstance().textRenderer.fontHeight, 30) + 4 + (inputStackRow * 18) + 2;
     }
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        int lineHeight = MinecraftClient.getInstance().textRenderer.fontHeight;
+        int titleColor = 16777215;
+        if (emiStack.getEffect() != null) {
+            switch (emiStack.getEffect().getCategory()) {
+                case BENEFICIAL -> titleColor = Formatting.GREEN.getColorValue();
+                case NEUTRAL -> titleColor = Formatting.GOLD.getColorValue();
+                case HARMFUL -> titleColor = Formatting.RED.getColorValue();
+            }
+        }
+        OrderedText title = getOutputs().get(0).getName().asOrderedText();
+        int titleX = 31 + ((144 - 31 - MinecraftClient.getInstance().textRenderer.getWidth(title)) / 2);
+        widgets.addText(title, titleX, 2, titleColor, true);
+
+        final int lineHeight = MinecraftClient.getInstance().textRenderer.fontHeight;
         int descLine = 0;
         for (OrderedText text : desc) {
-            widgets.addText(text, 31, 2 + lineHeight * descLine, 16777215, true);
+            widgets.addText(text, 31, 14 + lineHeight * descLine, 16777215, true);
             descLine += 1;
         }
         int descHeight = Math.max(descLine * lineHeight, 30);
+        descHeight += 12;
 
         int inputRow = 0;
         int inputColumn = 0;

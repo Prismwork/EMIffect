@@ -8,15 +8,8 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
-def baseVersion = project.mod_version
+version = project.mod_version
 group = project.maven_group
-
-def ENV = System.getenv()
-if (ENV.BUILD_NUMBER) {
-	version = baseVersion + '.' + ENV.BUILD_NUMBER + "+" + project.minecraft_version
-} else {
-	version = baseVersion + '.local' + "+" + project.minecraft_version
-}
 
 repositories {
     maven {
@@ -34,7 +27,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-  modImplementation "dev.emi:emi:${project.emi_version}"
+	modImplementation "dev.emi:emi:${project.emi_version}"
 
 	// Uncomment the following line to enable the deprecated Fabric API modules. 
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.

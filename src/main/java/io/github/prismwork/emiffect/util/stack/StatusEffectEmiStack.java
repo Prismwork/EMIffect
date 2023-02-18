@@ -1,4 +1,4 @@
-package io.github.pkstdev.emiffect.util.stack;
+package io.github.prismwork.emiffect.util.stack;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.emi.emi.EmiPort;
@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class StatusEffectEmiStack extends EmiStack {
     @Nullable
     private final StatusEffect effect;

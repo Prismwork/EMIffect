@@ -1,12 +1,12 @@
-package io.github.pkstdev.emiffect;
+package io.github.prismwork.emiffect;
 
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiStack;
-import io.github.pkstdev.emiffect.recipe.StatusEffectInfo;
-import io.github.pkstdev.emiffect.util.stack.StatusEffectEmiStack;
+import io.github.prismwork.emiffect.recipe.StatusEffectInfo;
+import io.github.prismwork.emiffect.util.stack.StatusEffectEmiStack;
 import io.shcm.shsupercm.fabric.fletchingtable.api.Entrypoint;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.effect.StatusEffect;
