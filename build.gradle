@@ -86,7 +86,7 @@ modrinth {
 	versionName = "EMIffect ${project.mod_version} for Minecraft ${project.minecraft_version}"
 	versionType = "release"
 	uploadFile = remapJar
-	gameVersions = ["1.19.2"]
+	gameVersions = [project.minecraft_version]
 	loaders = ["fabric", "quilt"]
 	dependencies {
 		required.project "emi"

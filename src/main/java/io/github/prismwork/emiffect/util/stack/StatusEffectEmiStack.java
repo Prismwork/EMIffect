@@ -17,10 +17,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.PotionUtil;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -62,8 +62,8 @@ public class StatusEffectEmiStack extends EmiStack {
         if (effect != null) {
             Sprite sprite = sprites.getSprite(effect);
             RenderSystem.clearColor(1.0F, 1.0F,1.0F,1.0F);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, sprite.getAtlas().getId());
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+            RenderSystem.setShaderTexture(0, sprite.getAtlasId());
             DrawableHelper.drawSprite(matrices, x, y, 0, 18, 18, sprite);
             RenderSystem.applyModelViewMatrix();
         }
@@ -86,7 +86,7 @@ public class StatusEffectEmiStack extends EmiStack {
 
     @Override
     public Identifier getId() {
-        return Registry.STATUS_EFFECT.getId(effect);
+        return Registries.STATUS_EFFECT.getId(effect);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class StatusEffectEmiStack extends EmiStack {
         }
         tooltips.add(TooltipComponent.of(EmiPort.ordered(
                 EmiPort.translatable("tooltip.emiffect.color", "#" + String.format("%02x", effect.getColor())).formatted(Formatting.GRAY))));
-        Identifier id = Registry.STATUS_EFFECT.getId(effect);
+        Identifier id = Registries.STATUS_EFFECT.getId(effect);
         if (id != null)
             FabricLoader.getInstance().getModContainer(id.getNamespace()).ifPresent(modContainer -> tooltips.add(TooltipComponent.of(EmiPort.ordered(
                     EmiPort.literal(modContainer.getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC)))));
