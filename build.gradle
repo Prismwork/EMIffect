@@ -2,13 +2,14 @@ plugins {
 	id 'fabric-loom' version '1.0-SNAPSHOT'
 	id "io.shcm.shsupercm.fabric.fletchingtable" version "1.5" // Hacky good stuff
 	id 'maven-publish'
+	id "com.modrinth.minotaur" version "2.+"
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
-version = project.mod_version
+version = project.mod_version + "+mc" + project.minecraft_version
 group = project.maven_group
 
 repositories {
@@ -78,4 +79,16 @@ publishing {
 	}
 }
 
-
+modrinth {
+	token = System.getenv("MODRINTH_TOKEN")
+	projectId = "emiffect"
+	versionNumber = version
+	versionName = "EMIffect ${project.mod_version} for Minecraft ${project.minecraft_version}"
+	versionType = "release"
+	uploadFile = remapJar
+	gameVersions = ["1.19.2"]
+	loaders = ["fabric", "quilt"]
+	dependencies {
+		required.project "emi"
+	}
+}
