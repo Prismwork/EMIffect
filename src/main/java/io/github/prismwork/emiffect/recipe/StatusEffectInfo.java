@@ -160,7 +160,7 @@ public class StatusEffectInfo implements EmiRecipe {
             }
         }
 
-        SlotWidget effectSlot = new SlotWidget(getOutputs().get(0), 3, (descHeight - 26) / 2).output(true);
+        SlotWidget effectSlot = new SlotWidget(getOutputs().get(0), 3, (descHeight - 26) / 2).large(true);
         widgets.add(effectSlot);
     }
 }
