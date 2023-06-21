@@ -5,7 +5,7 @@ import dev.emi.emi.EmiPort;
 import dev.emi.emi.api.stack.EmiStack;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.texture.Sprite;
@@ -31,11 +31,9 @@ import java.util.List;
 public class StatusEffectEmiStack extends EmiStack {
     @Nullable
     private final StatusEffect effect;
-    private final StatusEffectEntry entry;
 
     protected StatusEffectEmiStack(@Nullable StatusEffect effect) {
         this.effect = effect;
-        this.entry = new StatusEffectEntry(effect);
     }
 
     public static StatusEffectEmiStack of(@Nullable StatusEffect effect) {
@@ -57,14 +55,14 @@ public class StatusEffectEmiStack extends EmiStack {
     }
 
     @Override
-    public void render(MatrixStack matrices, int x, int y, float delta, int flags) {
+    public void render(DrawContext draw, int x, int y, float delta, int flags) {
         StatusEffectSpriteManager sprites = MinecraftClient.getInstance().getStatusEffectSpriteManager();
         if (effect != null) {
             Sprite sprite = sprites.getSprite(effect);
             RenderSystem.clearColor(1.0F, 1.0F,1.0F,1.0F);
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderTexture(0, sprite.getAtlasId());
-            DrawableHelper.drawSprite(matrices, x, y, 0, 18, 18, sprite);
+            draw.drawSprite(x, y, 0, 18, 18, sprite);
             RenderSystem.applyModelViewMatrix();
         }
     }
@@ -77,11 +75,6 @@ public class StatusEffectEmiStack extends EmiStack {
     @Override
     public Object getKey() {
         return effect;
-    }
-
-    @Override
-    public Entry<?> getEntry() {
-        return entry;
     }
 
     @Override
@@ -118,17 +111,6 @@ public class StatusEffectEmiStack extends EmiStack {
     @Override
     public Text getName() {
         return effect != null ? effect.getName() : EmiPort.literal("missingno");
-    }
-
-    public static class StatusEffectEntry extends Entry<StatusEffect> {
-        public StatusEffectEntry(StatusEffect value) {
-            super(value);
-        }
-
-        @Override
-        public Class<? extends StatusEffect> getType() {
-            return getValue().getClass();
-        }
     }
 
     @Override
