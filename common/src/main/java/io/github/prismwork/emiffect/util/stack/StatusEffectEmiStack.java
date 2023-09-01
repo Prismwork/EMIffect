@@ -45,7 +45,7 @@ public class StatusEffectEmiStack extends EmiStack {
 
     @Override
     public boolean isEmpty() {
-        return effect != null;
+        return effect == null;
     }
 
     public @Nullable StatusEffect getEffect() {
