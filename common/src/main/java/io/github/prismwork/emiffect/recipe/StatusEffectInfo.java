@@ -15,7 +15,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.*;
@@ -40,11 +39,11 @@ public class StatusEffectInfo implements EmiRecipe {
 
     public StatusEffectInfo(StatusEffect effect, StatusEffectEmiStack emiStack) {
         this.id = Registries.STATUS_EFFECT.getId(effect) != null ? Registries.STATUS_EFFECT.getId(effect) : new Identifier("emiffect", "missingno");
-        List<EmiIngredient> inputs1 = new ArrayList<>();
+        List<EmiIngredient> inputs0 = new ArrayList<>();
         for (Potion potion : Registries.POTION) {
             for (StatusEffectInstance instance : potion.getEffects()) {
                 if (instance.getEffectType().equals(effect)) {
-                    inputs1.addAll(List.of(EmiStack.of(PotionUtil.setPotion(Items.POTION.getDefaultStack(), potion)),
+                    inputs0.addAll(List.of(EmiStack.of(PotionUtil.setPotion(Items.POTION.getDefaultStack(), potion)),
                             EmiStack.of(PotionUtil.setPotion(Items.SPLASH_POTION.getDefaultStack(), potion)),
                             EmiStack.of(PotionUtil.setPotion(Items.LINGERING_POTION.getDefaultStack(), potion)),
                             EmiStack.of(PotionUtil.setPotion(Items.TIPPED_ARROW.getDefaultStack(), potion))));
@@ -58,7 +57,7 @@ public class StatusEffectInfo implements EmiRecipe {
                 StatusEffect flowerEffect = flower.getEffectInStew();
                 if (flowerEffect.equals(effect)) {
                     SuspiciousStewItem.addEffectToStew(stew, effect, 200);
-                    inputs1.add(EmiStack.of(stew));
+                    inputs0.add(EmiStack.of(stew));
                     break;
                 }
             }
@@ -69,7 +68,7 @@ public class StatusEffectInfo implements EmiRecipe {
                 ItemStack stack = new ItemStack(item);
                 for (Pair<StatusEffectInstance, Float> pair : food.getStatusEffects()) {
                     if (pair.getFirst().getEffectType().equals(effect)) {
-                        inputs1.add(EmiStack.of(stack));
+                        inputs0.add(EmiStack.of(stack));
                         break;
                     }
                 }
@@ -77,10 +76,10 @@ public class StatusEffectInfo implements EmiRecipe {
         }
         for (StatusEffect[] effects : BeaconBlockEntity.EFFECTS_BY_LEVEL) {
             if (Arrays.asList(effects).contains(effect)) {
-                inputs1.add(EmiStack.of(Blocks.BEACON));
+                inputs0.add(EmiStack.of(Blocks.BEACON));
             }
         }
-        this.inputs = inputs1;
+        this.inputs = inputs0;
         this.desc = MinecraftClient.getInstance().textRenderer.wrapLines(EmiPort.translatable("effect." + id.getNamespace() + "." + id.getPath() + ".description"), 110);
         this.inputStackRow = inputs.isEmpty() ? 0 : 1;
         int inputColumn = 0;
@@ -101,7 +100,7 @@ public class StatusEffectInfo implements EmiRecipe {
 
     @Override
     public @Nullable Identifier getId() {
-        return new Identifier("emi", "emiffect/"
+        return new Identifier("emiffect", "effects/"
                 + id.getNamespace()
                 + "/" + id.getPath());
     }
@@ -136,7 +135,7 @@ public class StatusEffectInfo implements EmiRecipe {
                 case HARMFUL -> titleColor = Formatting.RED.getColorValue();
             }
         }
-        OrderedText title = getOutputs().get(0).getName().asOrderedText();
+        OrderedText title = emiStack.getName().asOrderedText();
         int titleX = 31 + ((144 - 31 - MinecraftClient.getInstance().textRenderer.getWidth(title)) / 2);
         widgets.addText(title, titleX, 2, titleColor, true);
 
@@ -160,7 +159,7 @@ public class StatusEffectInfo implements EmiRecipe {
             }
         }
 
-        SlotWidget effectSlot = new SlotWidget(getOutputs().get(0), 3, (descHeight - 26) / 2).large(true);
+        SlotWidget effectSlot = new SlotWidget(emiStack, 3, (descHeight - 26) / 2).large(true);
         widgets.add(effectSlot);
     }
 }

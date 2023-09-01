@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+issueTrackerURL = "https://github.com/Prismwork/EMIffect/issues"
+license = "MIT"
+
+[[mods]]
+modId = "emiffect"
+version = "${version}"
+displayName = "EMIffect"
+authors = "Prismwork, Flamarine"
+description = '''
+EMI addon that appends status effects in EMI and provides information about each status effect.
+'''
+logoFile = "icon.png"
+
+[[dependencies.emiffect]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.emiffect]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.emiffect]]
+modId = "emi"
+mandatory = true
+versionRange = "[1.0,)"
+ordering = "NONE"
+side = "CLIENT"

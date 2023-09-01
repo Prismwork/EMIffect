@@ -6,19 +6,20 @@
   "name": "EMIffect",
   "description": "EMI addon that appends status effects in EMI and provides information about each status effect.",
   "authors": [
-    "pkstDev"
+    "Prismwork"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/pkstDev/fabric-example-mod"
+    "homepage": "https://modrinth.com/mod/emiffect",
+    "sources": "https://github.com/Prismwork/EMIffect"
   },
 
   "license": "MIT",
-  "icon": "assets/emiffect/icon.png",
+  "icon": "icon.png",
 
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "emi": [
+      "io.github.prismwork.emiffect.EMIffectPlugin"
     ]
   },
 
