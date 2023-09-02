@@ -2,8 +2,8 @@ package io.github.prismwork.emiffect.util.stack;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.emi.emi.EmiPort;
+import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.stack.EmiStack;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
@@ -101,8 +101,7 @@ public class StatusEffectEmiStack extends EmiStack {
                 EmiPort.translatable("tooltip.emiffect.color", "#" + String.format("%02x", effect.getColor())).formatted(Formatting.GRAY))));
         Identifier id = Registries.STATUS_EFFECT.getId(effect);
         if (id != null)
-            FabricLoader.getInstance().getModContainer(id.getNamespace()).ifPresent(modContainer -> tooltips.add(TooltipComponent.of(EmiPort.ordered(
-                    EmiPort.literal(modContainer.getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC)))));
+            tooltips.add(TooltipComponent.of(EmiPort.ordered(EmiPort.literal(EmiUtil.getModName(id.getNamespace()), Formatting.BLUE, Formatting.ITALIC))));
         return tooltips;
     }
 
