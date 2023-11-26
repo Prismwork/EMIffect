@@ -34,6 +34,12 @@ subprojects {
                 projectId = "705gWllI"
                 minecraftVersions.add(rootProject.minecraft_version)
             }
+
+            curseforge {
+                accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
+                projectId = "735528"
+                minecraftVersions.add(rootProject.minecraft_version)
+            }
         }
     }
 }
