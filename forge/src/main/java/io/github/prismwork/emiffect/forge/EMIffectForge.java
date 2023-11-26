@@ -1,4 +1,4 @@
-package io.github.prismwork.emitrades.forge;
+package io.github.prismwork.emiffect.forge;
 
 import net.minecraftforge.fml.common.Mod;
 
