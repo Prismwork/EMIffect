@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "moe.prwk.emiffect.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [],
+  "client": [
+    "RecipeScreenAccessor",
+    "TextureAtlasHolderInvoker"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
