@@ -12,7 +12,7 @@ license = "${mod_license}"
     logoFile = "icon.png"
 
 [[dependencies.${mod_id}]]
-    modId = "neoforge"
+    modId = "forge"
     mandatory = true
     ordering = "NONE"
     side = "CLIENT"

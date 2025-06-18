@@ -1,1 +1,1 @@
-* Fixed mod having duplicate mixin config settings
+* Fixed Forge 1.20.1 requiring NeoForge (what the hell)

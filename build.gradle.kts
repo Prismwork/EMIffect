@@ -19,7 +19,7 @@ val displayPlatform = when (moddingPlatform) {
     "forge" -> "Forge"
     else -> throw IllegalArgumentException("Invalid platform: $moddingPlatform")
 }
-val baseVersion = "2.1.1"
+val baseVersion = "2.1.2"
 
 modstitch {
     minecraftVersion = minecraft
