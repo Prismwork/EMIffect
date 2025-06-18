@@ -22,6 +22,15 @@ public final class VersionUtil {
          *///?}
     }
 
+    public static ResourceLocation identifier(String id) {
+        String[] parts = id.split(":", 2);
+        try {
+            return identifier(parts[0], parts[1]);
+        } catch (IndexOutOfBoundsException ignored) {
+            return identifier("minecraft", parts[0]);
+        }
+    }
+
     public static ItemStack setPotion(ItemStack stack, Holder<Potion> potion) {
         //? if >=1.20.6 {
         stack.set(DataComponents.POTION_CONTENTS, new PotionContents(potion));

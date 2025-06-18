@@ -8,6 +8,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(TextureAtlasHolder.class)
 public interface TextureAtlasHolderInvoker {
-    @Invoker
-    TextureAtlasSprite invokeGetSprite(ResourceLocation id);
+    @Invoker("getSprite")
+    TextureAtlasSprite emiffect$invokeGetSprite(ResourceLocation id);
 }

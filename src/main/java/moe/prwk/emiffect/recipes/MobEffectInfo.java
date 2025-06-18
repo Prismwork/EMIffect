@@ -13,14 +13,17 @@ import moe.prwk.emiffect.EMIffectPlugin;
 import moe.prwk.emiffect.mixin.RecipeScreenAccessor;
 import moe.prwk.emiffect.util.MobEffectEmiStack;
 import moe.prwk.emiffect.util.VersionUtil;
+import moe.prwk.emiffect.util.resources.ExtraAppenderLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Holder;
 //? if >=1.20.6 {
 import net.minecraft.core.component.DataComponents;
 //?}
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.effect.MobEffect;
@@ -40,8 +43,6 @@ import net.minecraft.world.level.block.FlowerBlock;
 *///?}
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 //? if <1.20.6 {
@@ -50,16 +51,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MobEffectInfo implements EmiRecipe {
-    private final List<EmiStack> inputs;
+    private final List<EmiIngredient> inputs;
     private final List<FormattedCharSequence> desc;
     private final ResourceLocation id;
     private int inputStackRow;
     private final MobEffectEmiStack emiStack;
-    private static final Logger LOGGER = LoggerFactory.getLogger("EMIffect");
 
     public MobEffectInfo(MobEffect effect, MobEffectEmiStack emiStack) {
         this.id = emiStack.getId();
-        List<EmiStack> inputs0 = new ArrayList<>();
+        List<EmiIngredient> inputs0 = new ArrayList<>();
 
         BuiltInRegistries.POTION.holders().forEach(potion -> {
             for (MobEffectInstance instance : potion.value().getEffects()) {
@@ -139,7 +139,7 @@ public class MobEffectInfo implements EmiRecipe {
         *///?}
 
         this.inputs = inputs0;
-        this.desc = Minecraft.getInstance().font.split(EmiPort.translatable("effect." + id.getNamespace() + "." + id.getPath() + ".description"), 110);
+        this.desc = Minecraft.getInstance().font.split(getDescription(id), 110);
         this.inputStackRow = inputs.isEmpty() ? 0 : 1;
         int inputColumn = 0;
         for (EmiIngredient ignored : inputs) {
@@ -150,6 +150,18 @@ public class MobEffectInfo implements EmiRecipe {
             inputColumn += 1;
         }
         this.emiStack = emiStack;
+    }
+
+    public void addFromAppenders(List<ExtraAppenderLoader.ExtraAppender> appenders) {
+        for (ExtraAppenderLoader.ExtraAppender appender : appenders) {
+            if (id.equals(appender.effectId())) {
+                appender.getIngredients().forEach(ingredient -> {
+                    if (!inputs.contains(ingredient)) {
+                        inputs.add(ingredient);
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -166,12 +178,12 @@ public class MobEffectInfo implements EmiRecipe {
 
     @Override
     public List<EmiIngredient> getInputs() {
-        return List.of(emiStack);
+        return inputs;
     }
 
     @Override
     public List<EmiStack> getOutputs() {
-        return inputs;
+        return List.of(emiStack);
     }
 
     @Override
@@ -184,9 +196,10 @@ public class MobEffectInfo implements EmiRecipe {
         int upperOffset = 14 + Math.max(desc.size() * Minecraft.getInstance().font.lineHeight, 30) + 2;
         int backgroundHeight = 200;
         if (Minecraft.getInstance().screen instanceof RecipeScreen screen) {
-            backgroundHeight = ((RecipeScreenAccessor) screen).getBackgroundWidth();
+            backgroundHeight = ((RecipeScreenAccessor) screen).emiffect$getBackgroundHeight();
         }
-        return Math.min(((inputs.size() - 1) / 6 + 1) * 18 + upperOffset, backgroundHeight);
+        int slotsHeight = inputs.isEmpty() ? 0 : ((inputs.size() - 1) / 6 + 1) * 18;
+        return Math.min(slotsHeight + upperOffset, backgroundHeight);
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -214,9 +227,7 @@ public class MobEffectInfo implements EmiRecipe {
         descHeight += 12;
 
         int upperOffset = 14 + Math.max(desc.size() * Minecraft.getInstance().font.lineHeight, 30) + 2;
-        int ph = (widgets.getHeight() - (upperOffset + 14) - 2) / 18 + 1;
-        LOGGER.info("Display height: {}, upper offset: {}", getDisplayHeight(), upperOffset);
-        LOGGER.info("Expected row count: {}, actual row count: {}", inputStackRow, ph);
+        int ph = inputs.isEmpty() ? 0 : (widgets.getHeight() - (upperOffset + 14) - 2) / 18 + 1;
         PageManager manager = new PageManager(inputs, 6 * ph);
         if (ph < inputStackRow) {
             widgets.addButton(2, upperOffset, 12, 12, 0, 0, () -> true,
@@ -225,10 +236,10 @@ public class MobEffectInfo implements EmiRecipe {
                     (mouseX, mouseY, button) -> manager.scroll(1));
         }
         for (int i = 0; i < inputs.size() && i / 6 <= ph; i++) {
-            widgets.add(new PageSlotWidget(manager, i, i % 6 * 18 + 18, i / 6 * 18 + upperOffset)).recipeContext(this);
+            widgets.add(new PageSlotWidget(manager, i, i % 6 * 18 + 18, i / 6 * 18 + upperOffset));
         }
 
-        SlotWidget effectSlot = new SlotWidget(emiStack, 3, (descHeight - 26) / 2).large(true);
+        SlotWidget effectSlot = new SlotWidget(emiStack, 3, (descHeight - 26) / 2).large(true).recipeContext(this);
         widgets.add(effectSlot);
     }
 
@@ -239,11 +250,11 @@ public class MobEffectInfo implements EmiRecipe {
 
     // carbon copy of dev.emi.emi.api.recipe.EmiIngredientRecipe$PageManager
     private static class PageManager {
-        public final List<EmiStack> stacks;
+        public final List<EmiIngredient> stacks;
         public final int pageSize;
         public int currentPage;
 
-        public PageManager(List<EmiStack> stacks, int pageSize) {
+        public PageManager(List<EmiIngredient> stacks, int pageSize) {
             this.stacks = stacks;
             this.pageSize = pageSize;
         }
@@ -259,7 +270,7 @@ public class MobEffectInfo implements EmiRecipe {
             }
         }
 
-        public EmiStack getStack(int offset) {
+        public EmiIngredient getStack(int offset) {
             offset += pageSize * currentPage;
             if (offset < stacks.size()) {
                 return stacks.get(offset);
@@ -312,5 +323,15 @@ public class MobEffectInfo implements EmiRecipe {
             }
         }
         //?}
+    }
+
+    private static MutableComponent getDescription(ResourceLocation id) {
+        String firstKey = String.format("effect.%s.%s.description", id.getNamespace(), id.getPath());
+        if (I18n.exists(firstKey)) return EmiPort.translatable(firstKey);
+
+        String secondKey = String.format("effect.%s.%s.desc", id.getNamespace(), id.getPath());
+        if (I18n.exists(secondKey)) return EmiPort.translatable(secondKey);
+
+        return EmiPort.translatable("info.emiffect.desc_not_found");
     }
 }

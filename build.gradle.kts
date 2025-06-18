@@ -1,5 +1,3 @@
-import dev.isxander.modstitch.publishing.msPublishing
-
 plugins {
     id("dev.isxander.modstitch.base") version "0.5.12"
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
@@ -15,12 +13,13 @@ val moddingPlatform = when (modstitch.platform) {
     dev.isxander.modstitch.util.Platform.MDG -> "neoforge"
     dev.isxander.modstitch.util.Platform.MDGLegacy -> "forge"
 }
-val displayPlatform = when (modstitch.platform) {
-    dev.isxander.modstitch.util.Platform.Loom -> "Fabric"
-    dev.isxander.modstitch.util.Platform.MDG -> "NeoForge"
-    dev.isxander.modstitch.util.Platform.MDGLegacy -> "Forge"
+val displayPlatform = when (moddingPlatform) {
+    "fabric" -> "Fabric"
+    "neoforge" -> "NeoForge"
+    "forge" -> "Forge"
+    else -> throw IllegalArgumentException("Invalid platform: $moddingPlatform")
 }
-val baseVersion = "2.0.0"
+val baseVersion = "2.1.0"
 
 modstitch {
     minecraftVersion = minecraft

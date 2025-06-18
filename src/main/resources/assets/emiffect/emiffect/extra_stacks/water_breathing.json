@@ -1,0 +1,6 @@
+{
+  "id": "minecraft:water_breathing",
+  "stacks": [
+    "item:minecraft:turtle_helmet"
+  ]
+}

@@ -10,6 +10,9 @@
     "issues": "${mod_issue_tracker}"
   },
   "entrypoints": {
+    "client": [
+      "moe.prwk.emiffect.loaders.fabric.FabricEntrypoint"
+    ],
     "emi": [
       "moe.prwk.emiffect.EMIffectPlugin"
     ]

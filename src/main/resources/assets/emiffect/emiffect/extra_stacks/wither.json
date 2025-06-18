@@ -1,0 +1,7 @@
+{
+  "id": "minecraft:wither",
+  "stacks": [
+    "item:minecraft:wither_spawn_egg",
+    "item:minecraft:wither_rose"
+  ]
+}

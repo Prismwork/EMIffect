@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.emi.emi.EmiPort;
 import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.stack.serializer.EmiStackSerializer;
 import moe.prwk.emiffect.EMIffectPlugin;
 import moe.prwk.emiffect.mixin.TextureAtlasHolderInvoker;
 import net.minecraft.ChatFormatting;
@@ -20,14 +21,22 @@ import net.minecraft.core.component.DataComponentPatch;
 *///?}
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+//? if <1.20.4 {
+/*import net.minecraft.network.chat.TextColor;
+*///?}
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MobEffectEmiStack extends EmiStack {
+    private static final MutableComponent WHITESPACE = EmiPort.literal(" ");
+
     @Nullable
     private final MobEffect effect;
 
@@ -44,7 +53,7 @@ public class MobEffectEmiStack extends EmiStack {
     public void render(GuiGraphics draw, int x, int y, float delta, int flags) {
         MobEffectTextureManager sprites = Minecraft.getInstance().getMobEffectTextures();
         if (effect != null) {
-            TextureAtlasSprite sprite = ((TextureAtlasHolderInvoker) sprites).invokeGetSprite(getId());
+            TextureAtlasSprite sprite = ((TextureAtlasHolderInvoker) sprites).emiffect$invokeGetSprite(getId());
             RenderSystem.clearColor(1.0F, 1.0F,1.0F,1.0F);
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, sprite.atlasLocation());
@@ -104,12 +113,13 @@ public class MobEffectEmiStack extends EmiStack {
             case HARMFUL -> tooltips.add(ClientTooltipComponent.create(EmiPort.ordered(
                     EmiPort.translatable("tooltip.emiffect.harmful").withStyle(ChatFormatting.RED))));
         }
-        tooltips.add(ClientTooltipComponent.create(EmiPort.ordered(
-                EmiPort.translatable(
+
+        MutableComponent component = EmiPort.translatable(
                         "tooltip.emiffect.color",
-                        "#" + String.format("%02x", effect.getColor())
-                ).withStyle(ChatFormatting.GRAY)
-        )));
+                        "#" + String.format("%02x", effect.getColor()).toUpperCase(Locale.ROOT)
+                ).withStyle(ChatFormatting.GRAY).append(WHITESPACE)
+                .append(EmiPort.literal("█").withStyle(style -> style.withColor(TextColor.fromRgb(effect.getColor()))));
+        tooltips.add(ClientTooltipComponent.create(EmiPort.ordered(component)));
 
         ResourceLocation id = BuiltInRegistries.MOB_EFFECT.getKey(effect);
         if (id != null)
@@ -130,5 +140,28 @@ public class MobEffectEmiStack extends EmiStack {
 
     public @Nullable MobEffect getEffect() {
         return effect;
+    }
+
+    public static class Serializer implements EmiStackSerializer<MobEffectEmiStack> {
+        //? if >=1.20.6 {
+        @Override
+        public EmiStack create(ResourceLocation id, DataComponentPatch componentChanges, long amount) {
+            MobEffect effect = BuiltInRegistries.MOB_EFFECT.get(id);
+            if (effect != null) return new MobEffectEmiStack(effect);
+            return EmiStack.EMPTY;
+        }
+        //?} else {
+        /*@Override
+        public EmiStack create(ResourceLocation id, CompoundTag nbt, long amount) {
+            MobEffect effect = BuiltInRegistries.MOB_EFFECT.get(id);
+            if (effect != null) return new MobEffectEmiStack(effect);
+            return EmiStack.EMPTY;
+        }
+        *///?}
+
+        @Override
+        public String getType() {
+            return "emiffect:effect";
+        }
     }
 }

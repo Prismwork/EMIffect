@@ -1,0 +1,6 @@
+{
+  "id": "minecraft:mining_fatigue",
+  "stacks": [
+    "item:minecraft:elder_guardian_spawn_egg"
+  ]
+}

@@ -4,7 +4,7 @@
 import net.neoforged.fml.common.Mod;
 
 @Mod("emiffect")
-public class NeoforgeEntrypoint {
-    public NeoforgeEntrypoint() {}
+public class NeoForgeEntrypoint {
+    public NeoForgeEntrypoint() {}
 }
 *///?}

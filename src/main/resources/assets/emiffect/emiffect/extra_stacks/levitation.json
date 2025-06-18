@@ -1,0 +1,6 @@
+{
+  "id": "minecraft:levitation",
+  "stacks": [
+    "item:minecraft:shulker_spawn_egg"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "id": "minecraft:hunger",
+  "stacks": [
+    "item:minecraft:husk_spawn_egg"
+  ]
+}

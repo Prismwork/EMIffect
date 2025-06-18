@@ -1,0 +1,6 @@
+{
+  "id": "minecraft:bad_omen",
+  "stacks": [
+    "item:minecraft:pillager_spawn_egg"
+  ]
+}

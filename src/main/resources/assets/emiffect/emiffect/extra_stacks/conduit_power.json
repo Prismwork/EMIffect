@@ -1,0 +1,6 @@
+{
+  "id": "minecraft:conduit_power",
+  "stacks": [
+    "item:minecraft:conduit"
+  ]
+}
