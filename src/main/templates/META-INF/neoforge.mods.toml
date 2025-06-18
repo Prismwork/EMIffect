@@ -20,6 +20,7 @@ license = "${mod_license}"
 [[dependencies.${mod_id}]]
     modId = "minecraft"
     type = "required"
+    versionRange = "[${mc_version},)"
     side = "CLIENT"
 
 [[dependencies.${mod_id}]]
