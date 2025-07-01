@@ -50,6 +50,7 @@ import java.util.ArrayList;
 *///?}
 import java.util.List;
 
+@SuppressWarnings("CommentedOutCode")
 public class MobEffectInfo implements EmiRecipe {
     private final List<EmiIngredient> inputs;
     private final List<FormattedCharSequence> desc;
@@ -235,7 +236,7 @@ public class MobEffectInfo implements EmiRecipe {
             widgets.addButton(widgets.getWidth() - 14, upperOffset, 12, 12, 12, 0, () -> true,
                     (mouseX, mouseY, button) -> manager.scroll(1));
         }
-        for (int i = 0; i < inputs.size() && i / 6 <= ph; i++) {
+        for (int i = 0; i < inputs.size() && i / 6 <= ph + (inputs.isEmpty() ? 1 : 0); i++) {
             widgets.add(new PageSlotWidget(manager, i, i % 6 * 18 + 18, i / 6 * 18 + upperOffset));
         }
 
@@ -326,6 +327,13 @@ public class MobEffectInfo implements EmiRecipe {
     }
 
     private static MutableComponent getDescription(ResourceLocation id) {
+        // Handle the bad omen translation key change manually here
+        //? if <1.20.5 {
+        /*if (id.getNamespace().equals("minecraft") && id.getPath().equals("bad_omen")) {
+            return EmiPort.translatable("effect.minecraft.bad_omen_legacy.description");
+        }
+        *///?}
+
         String firstKey = String.format("effect.%s.%s.description", id.getNamespace(), id.getPath());
         if (I18n.exists(firstKey)) return EmiPort.translatable(firstKey);
 

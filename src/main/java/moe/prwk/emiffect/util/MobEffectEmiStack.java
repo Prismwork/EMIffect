@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@SuppressWarnings("CommentedOutCode")
 public class MobEffectEmiStack extends EmiStack {
     private static final MutableComponent WHITESPACE = EmiPort.literal(" ");
 

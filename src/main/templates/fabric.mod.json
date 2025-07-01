@@ -11,7 +11,7 @@
   },
   "entrypoints": {
     "client": [
-      "moe.prwk.emiffect.loaders.fabric.FabricEntrypoint"
+      "moe.prwk.emiffect.loaders.fabric.FabricClient"
     ],
     "emi": [
       "moe.prwk.emiffect.EMIffectPlugin"

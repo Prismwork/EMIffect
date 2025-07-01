@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+@SuppressWarnings("CommentedOutCode")
 @EmiEntrypoint
 public class EMIffectPlugin implements EmiPlugin {
     public static final String MOD_ID = "emiffect";

@@ -48,6 +48,9 @@ modstitch {
         modVersion = "$baseVersion+mc$minecraft"
         modGroup = "moe.prwk"
         modAuthor = "Flamarine"
+        modDescription = """
+            EMI addon that appends status effects in EMI and provides information about each status effect.
+        """.trimIndent()
 
         fun <K, V> MapProperty<K, V>.populate(block: MapProperty<K, V>.() -> Unit) {
             block()

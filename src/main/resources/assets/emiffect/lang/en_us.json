@@ -11,7 +11,7 @@
   "effect.minecraft.blindness.description": "Impairs vision and disables the ability to sprint and critical hit.",
   "effect.minecraft.conduit_power.description": "Increases underwater visibility and mining speed, prevents drowning.",
   "effect.minecraft.darkness.description": "Adds a pulsating darkening affect to the players screen and pulsating black fog.",
-  "effect.minecraft.trial_omen.description": "Transforms nearby trial spawners into ominous trial spawners. Last 15 minutes tiles the levels of the original Bad Omen effect",
+  "effect.minecraft.trial_omen.description": "Transforms nearby trial spawners into ominous trial spawners. Last 15 minutes tiles the levels of the original Bad Omen effect.",
   "effect.minecraft.raid_omen.description": "Starts a raid at the location the effect was gained, once the effect expires. Lasts 30 seconds.",
   "effect.minecraft.dolphins_grace.description": "Drastically increases swimming speed. Effect given by dolphins.",
   "effect.minecraft.wind_charged.description": "Makes affected entities emit a burst of wind on death.",
@@ -45,6 +45,7 @@
   "effect.minecraft.water_breathing.description": "Prevents drowning and allows to breathe underwater.",
   "effect.minecraft.weakness.description": "Decreases melee damage; higher levels decrease damage dealt further.",
   "effect.minecraft.wither.description": "Inflicts lethal damage over time; higher levels do more damage per second.",
+  "effect.minecraft.bad_omen_legacy.description": "Causes an illager raid to start upon entering a village; higher levels increase the raid difficulty.",
 
   "info.emiffect.desc_not_found": "The effect appears to have no descriptions..."
 }

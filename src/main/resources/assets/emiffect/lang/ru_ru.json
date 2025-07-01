@@ -45,6 +45,7 @@
   "effect.minecraft.water_breathing.description": "Предотвращает утопление и позволяет дышать под водой.",
   "effect.minecraft.weakness.description": "Уменьшает урон в ближнем бою; более высокие уровни дополнительно уменьшают наносимый урон.",
   "effect.minecraft.wither.description": "Наносит летальный урон с течением времени; более высокие уровни наносят больше урона в секунду.",
+  "effect.minecraft.bad_omen_legacy.description": "При входе в деревню провоцирует начало набега.; Чем выше уровень тем сложнее набег.",
 
   "info.emiffect.desc_not_found": "Кажется, у эффекта нет описания..."
 }
