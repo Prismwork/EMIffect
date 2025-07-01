@@ -173,6 +173,16 @@ tasks.named("generateModMetadata") { dependsOn("stonecutterGenerate") }
 
 tasks.withType<JavaCompile> { dependsOn("stonecutterGenerate") }
 
+tasks.processResources {
+    filesMatching("assets/emiffect/emiffect/extra_stacks/bad_omen_legacy.json") {
+        if (stonecutter.eval(minecraft, ">=1.21")) exclude()
+    }
+
+    filesMatching("assets/emiffect/emiffect/extra_stacks/bad_omen.json") {
+        if (stonecutter.eval(minecraft, "<1.21")) exclude()
+    }
+}
+
 publishMods {
     displayName.set("$baseVersion for $displayPlatform $minecraft")
 
