@@ -19,7 +19,7 @@ val displayPlatform = when (moddingPlatform) {
     "forge" -> "Forge"
     else -> throw IllegalArgumentException("Invalid platform: $moddingPlatform")
 }
-val baseVersion = "2.1.3"
+val baseVersion = "2.1.4"
 
 modstitch {
     minecraftVersion = minecraft
@@ -174,10 +174,6 @@ tasks.named("generateModMetadata") { dependsOn("stonecutterGenerate") }
 tasks.withType<JavaCompile> { dependsOn("stonecutterGenerate") }
 
 tasks.processResources {
-    filesMatching("assets/emiffect/emiffect/extra_stacks/bad_omen_legacy.json") {
-        if (stonecutter.eval(minecraft, ">=1.21")) exclude()
-    }
-
     filesMatching("assets/emiffect/emiffect/extra_stacks/bad_omen.json") {
         if (stonecutter.eval(minecraft, "<1.21")) exclude()
     }
