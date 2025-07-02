@@ -4,6 +4,8 @@
   "name": "${mod_name}",
   "version": "${mod_version}",
   "description": "${mod_description}",
+  "authors": ["${mod_author}"],
+  "license": ["${mod_license}"],
   "environment": "client",
   "icon": "icon.png",
   "contact": {

@@ -22,6 +22,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +42,7 @@ public class EMIffectPlugin implements EmiPlugin {
 
     @SuppressWarnings("UnstableApiUsage")
     @Override
-    public void initialize(EmiInitRegistry registry) {
+    public void initialize(@NotNull EmiInitRegistry registry) {
         registry.addIngredientSerializer(MobEffectEmiStack.class, new MobEffectEmiStack.Serializer());
         registry.addRegistryAdapter(EmiRegistryAdapter.simple(
                 MobEffect.class,
@@ -51,7 +52,7 @@ public class EMIffectPlugin implements EmiPlugin {
     }
 
     @Override
-    public void register(EmiRegistry registry) {
+    public void register(@NotNull EmiRegistry registry) {
         registry.addCategory(CATEGORY);
 
         List<ExtraAppenderLoader.ExtraAppender> appenders = ExtraAppenderLoader.getAppenders();

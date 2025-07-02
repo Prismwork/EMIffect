@@ -51,6 +51,7 @@ modstitch {
         modDescription = """
             EMI addon that appends status effects in EMI and provides information about each status effect.
         """.trimIndent()
+        modLicense = "MIT"
 
         fun <K, V> MapProperty<K, V>.populate(block: MapProperty<K, V>.() -> Unit) {
             block()
@@ -132,6 +133,17 @@ modstitch {
     }
 }
 
+val buildAndCollect by tasks.registering(Copy::class) {
+    group = "build"
+
+    dependsOn(modstitch.finalJarTask)
+    from(modstitch.finalJarTask.get().archiveFile)
+
+    into(rootProject.layout.buildDirectory.dir("finalJars"))
+}
+
+modstitch.finalJarTask.get().finalizedBy(buildAndCollect)
+
 // Stonecutter constants for mod loaders.
 // See https://stonecutter.kikugie.dev/stonecutter/guide/comments#condition-constants
 var constraint: String = name.split("-")[1]
@@ -183,10 +195,11 @@ publishMods {
     displayName.set("$baseVersion for $displayPlatform $minecraft")
 
     file = modstitch.finalJarTask.get().archiveFile
-    version = modstitch.metadata.modVersion
+    version = "${modstitch.metadata.modVersion}+$moddingPlatform"
     changelog = rootProject.file("./CHANGELOG.md").readText()
     type = STABLE
     modLoaders.add(moddingPlatform)
+    if (moddingPlatform == "fabric") modLoaders.add("quilt")
 
     modrinth {
         accessToken = providers.environmentVariable("MODRINTH_API_KEY")
