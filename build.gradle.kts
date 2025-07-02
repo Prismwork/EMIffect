@@ -1,5 +1,5 @@
 plugins {
-    id("dev.isxander.modstitch.base") version "0.5.12"
+    id("dev.isxander.modstitch.base") // version "0.5.14-unstable"
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
 }
 
@@ -19,7 +19,7 @@ val displayPlatform = when (moddingPlatform) {
     "forge" -> "Forge"
     else -> throw IllegalArgumentException("Invalid platform: $moddingPlatform")
 }
-val baseVersion = "2.1.4"
+val baseVersion = "2.1.5"
 
 modstitch {
     minecraftVersion = minecraft

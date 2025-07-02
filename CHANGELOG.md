@@ -1,1 +1,1 @@
-* Fix duplicate mixin config again
+* Bump Modstitch (which hopefully fixes duplicate mixin configs forever)

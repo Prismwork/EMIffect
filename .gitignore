@@ -20,3 +20,9 @@ classes/
 *.launch
 
 **/.DS_Store
+
+plugins/modstitch/.gradle
+plugins/modstitch/.kotlin
+plugins/modstitch/build
+plugins/modstitch/test-project/.gradle
+plugins/modstitch/test-project/build

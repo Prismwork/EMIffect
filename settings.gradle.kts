@@ -26,6 +26,12 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
 }
 
+includeBuild("plugins/modstitch") {
+    dependencySubstitution {
+        substitute(module("dev.isxander.modstitch:base")).using(project(":"))
+    }
+}
+
 stonecutter {
     kotlinController = true
     centralScript = "build.gradle.kts"
