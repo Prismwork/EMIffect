@@ -1,5 +1,5 @@
 plugins {
-    id("dev.isxander.modstitch.base") // version "0.5.14-unstable"
+    id("dev.isxander.modstitch.base") version "0.6.3-unstable"
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
 }
 
@@ -19,14 +19,14 @@ val displayPlatform = when (moddingPlatform) {
     "forge" -> "Forge"
     else -> throw IllegalArgumentException("Invalid platform: $moddingPlatform")
 }
-val baseVersion = "2.1.5"
+val baseVersion = "2.1.6"
 
 modstitch {
     minecraftVersion = minecraft
 
     // Alternatively use stonecutter.eval if you have a lot of versions to target.
     // https://stonecutter.kikugie.dev/stonecutter/guide/setup#checking-versions
-    javaTarget =
+    javaVersion =
             when (minecraft) {
                 "1.20.1", "1.20.4" -> 17
                 "1.20.6", "1.21.1" -> 21
@@ -83,7 +83,7 @@ modstitch {
     loom {
         // It's not recommended to store the Fabric Loader version in properties.
         // Make sure its up to date.
-        fabricLoaderVersion = "0.16.14"
+        fabricLoaderVersion = "0.17.2"
 
         // Configure loom like normal in this block.
         configureLoom {
@@ -93,25 +93,27 @@ modstitch {
 
     // ModDevGradle (NeoForge, Forge, Forgelike)
     moddevgradle {
-        enable {
-            prop("deps.forge") { forgeVersion = it }
-            prop("deps.neoform") { neoFormVersion = it }
-            prop("deps.neoforge") { neoForgeVersion = it }
-            prop("deps.mcp") { mcpVersion = it }
-        }
+        prop("deps.forge") { forgeVersion = it }
+        prop("deps.neoform") { neoFormVersion = it }
+        prop("deps.neoforge") { neoForgeVersion = it }
+        prop("deps.mcp") { mcpVersion = it }
 
         // Configures client and server runs for MDG, it is not done by default
         defaultRuns()
 
         // This block configures the `neoforge` extension that MDG exposes by default,
         // you can configure MDG like normal from here
-        configureNeoforge {
+        configureNeoForge {
             validateAccessTransformers = false
 
             runs.all { disableIdeRun() }
         }
 
-        tasks.named("createMinecraftArtifacts") { dependsOn("stonecutterGenerate") }
+        onEnable {
+            tasks.named("createMinecraftArtifacts") {
+                dependsOn("stonecutterGenerate")
+            }
+        }
     }
 
     mixin {

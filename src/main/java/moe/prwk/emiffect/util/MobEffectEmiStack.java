@@ -162,7 +162,7 @@ public class MobEffectEmiStack extends EmiStack {
 
         @Override
         public String getType() {
-            return "emiffect:effect";
+            return "mob_effect";
         }
     }
 }

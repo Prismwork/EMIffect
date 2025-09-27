@@ -1,1 +1,1 @@
-* Bump Modstitch (which hopefully fixes duplicate mixin configs forever)
+* Change the type of mob effect stacks to `mob_effect`, fix #34

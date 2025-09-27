@@ -4,7 +4,9 @@ pluginManagement {
         mavenCentral()
 
         // Modstitch
-        maven("https://maven.isxander.dev/releases/")
+        maven("https://maven.isxander.dev/releases")
+        maven("https://maven.isxander.dev/snapshots")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
 
         // Loom platform
         maven("https://maven.fabricmc.net/")
@@ -15,21 +17,12 @@ pluginManagement {
         // Stonecutter
         maven("https://maven.kikugie.dev/releases")
         maven("https://maven.kikugie.dev/snapshots")
-
-        // Modstitch
-        maven("https://maven.isxander.dev/releases")
     }
 }
 
 plugins {
     id("dev.kikugie.stonecutter") version "0.7+"
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
-}
-
-includeBuild("plugins/modstitch") {
-    dependencySubstitution {
-        substitute(module("dev.isxander.modstitch:base")).using(project(":"))
-    }
 }
 
 stonecutter {
